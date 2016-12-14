@@ -1,0 +1,157 @@
+<html>
+
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<meta charset="UTF-8" />
+<!-- Bootstrap -->
+<link href="node_modules/bootstrap/dist/css/bootstrap.min.css"
+	rel="stylesheet" />
+
+<!-- Custom CSS -->
+<link href="node_modules/admin-lte/dist/css/AdminLTE.min.css"
+	rel="stylesheet" />
+<link
+	href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css"
+	rel="stylesheet" />
+<link href="select2-4.0.3/dist/css/select2.min.css" />
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+<style type="text/css">
+html {
+	height: 100%
+}
+
+body {
+	height: 100%;
+	margin: 0;
+	padding: 0
+}
+
+#map_canvas {
+	height: 100%
+}
+
+#ex1Slider .slider-selection {
+	background: #BABABA;
+}
+
+:root { -
+	-color1: #ef2c24; -
+	-color2: #efa526; -
+	-color3: #6c77ef; -
+	-color4: #46ef36; -
+	-color5: #dbdb18;
+}
+
+.attack-type-1 {
+	color: var(- -color1);
+}
+
+.attack-type-2 {
+	color: var(- -color2);
+}
+
+.attack-type-3 {
+	color: var(- -color3);
+}
+
+.attack-type-4 {
+	color: var(- -color4);
+}
+
+.attack-type-5 {
+	color: var(- -color5);
+}
+
+.div-inline {
+	display: inline
+}
+
+#info-box {
+	background-color: white;
+	border: 1px solid #ef2c24;
+	bottom: 100px;
+	height: 100px;
+	padding: 10px;
+	/*position: absolute;*/
+	left: 30px;
+}
+/* alternating column backgrounds */
+.vis-time-axis .vis-grid.vis-odd {
+	background: #f5f5f5;
+}
+/* gray background in weekends, white text color */
+.vis-time-axis .vis-grid.vis-saturday {
+	background: greenyellow;
+}
+
+.vis-time-axis .vis-grid.vis-sunday {
+	background: #ffcfce;
+}
+
+.vis-time-axis .vis-text.vis-saturday, .vis-time-axis .vis-text.vis-sunday
+	{
+	color: white;
+}
+</style>
+
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script src="node_modules/angular/angular.min.js"></script>
+<script src="node_modules/admin-lte/dist/js/app.min.js"></script>
+</head>
+
+<body>
+	<div id="wrapper" class="container-fluid" ng-app="myApp" ng-controller="myCtrl">
+		<div class="col-lg-12 row ">
+			<div class="col-lg-3">
+				<img src="top-cap02.png" />
+			</div>
+		</div>
+		<div class="col-lg-12">
+			<div class="box-header">
+
+				<h1>US Cert弱點整理</h1>
+			</div>
+			<div class="panel-body">
+				<table class="table table-bordered table-hover table-condensed ">
+					<thead>
+						<tr>
+							<th></th>
+							<th>設備商</th>
+							<th>產品</th>
+							<th>敘述</th>
+							<th>分數</th>
+							<th>發佈日期</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="item in posts">
+							<td>{{$index + 1}}</td>
+							<td class="success">{{item.vendor}}</td>
+							<td class="success">{{item.product}}</td>
+							<td class="info">{{item.Description}}
+								<div ng-show="!show">
+									<a ng-click="show = !show">翻譯</a>
+								</div>
+								<div ng-show="show">
+									<a ng-click="show = !show">儲存</a>
+								</div>
+								<div ng-if="show">
+									<textarea></textarea>
+								</div>
+							</td>
+							<td>{{item.Published}}</td>
+							<td>{{item.Score}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+		</div>
+
+	</div>
+    
+    <script src="js/uscert_table.js"></script>	
+</body>
+
+</html>
