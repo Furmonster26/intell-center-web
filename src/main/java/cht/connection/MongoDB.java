@@ -7,11 +7,16 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.Document;
+import org.bson.types.ObjectId;
+
 import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.UpdateResult;
 
 /**
  * 程式資訊摘要：<P>
@@ -25,12 +30,13 @@ import com.mongodb.MongoClient;
  */
 public class MongoDB {
     
-    DBCollection table;
+    MongoClient mongo;
+    MongoCollection<Document> table;
     
     public void connect() throws UnknownHostException {
      // Since 2.10.0, uses MongoClient
-        MongoClient mongo = new MongoClient( "localhost" , 27017 );
-        DB db = mongo.getDB("us-cert");
+        mongo = new MongoClient( "localhost" , 27017 );
+        MongoDatabase db = mongo.getDatabase("us-cert");
         table = db.getCollection("bulletin");
     }
     
@@ -39,22 +45,52 @@ public class MongoDB {
         searchQuery.put("vendor", "bmc");
         
         connect();
-        DBCursor cursor = table.find(); // find all
+        FindIterable<Document> find = table.find(); // find all
 
         List<String> results = new ArrayList<String>();
-        while (cursor.hasNext()) {
-            results.add(cursor.next().toString());
+        
+        try(MongoCursor<Document> cursor = find.iterator()) {
+            while (cursor.hasNext()) {
+//                System.out.println(cursor.next().toJson());
+                results.add(cursor.next().toJson());
+            }
         }
         
+        
+        mongo.close();
         return results;
     }
     
-//    public static void main(String[] args) {
-//        try {
-//            new MongoDB().getList();
-//        } catch (UnknownHostException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public void update(String id, String chi) throws UnknownHostException {
+        BasicDBObject newDocument = new BasicDBObject();
+        newDocument.append("$set", new BasicDBObject().append("chi", chi));
+        
+        BasicDBObject q = new BasicDBObject().append("_id", new ObjectId(id));
+        
+        connect();
+        UpdateResult r = table.updateOne(q, newDocument);
+        System.out.println("Update " + r.getModifiedCount() + " doc");
+        mongo.close();
+    }
+    
+    public void update(String id, String chi, boolean submit) throws UnknownHostException {
+        BasicDBObject newDocument = new BasicDBObject();
+        newDocument.append("$set", new BasicDBObject().append("chi", chi).append("submit", true));
+        
+        BasicDBObject q = new BasicDBObject().append("_id", new ObjectId(id));
+        
+        connect();
+        UpdateResult r = table.updateOne(q, newDocument);
+        System.out.println("Submit " + r.getModifiedCount() + " doc");
+        mongo.close();
+    }
+    
+    public static void main(String[] args) {
+        try {
+            new MongoDB().update("584a66bec720b221d4eb5717", "11111");
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

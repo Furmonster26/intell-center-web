@@ -1,0 +1,76 @@
+html {
+	height: 100%
+}
+
+body {
+	height: 100%;
+	margin: 0;
+	padding: 0
+}
+
+#map_canvas {
+	height: 100%
+}
+
+#ex1Slider .slider-selection {
+	background: #BABABA;
+}
+
+:root { -
+	-color1: #ef2c24; -
+	-color2: #efa526; -
+	-color3: #6c77ef; -
+	-color4: #46ef36; -
+	-color5: #dbdb18;
+}
+
+.attack-type-1 {
+	color: var(- -color1);
+}
+
+.attack-type-2 {
+	color: var(- -color2);
+}
+
+.attack-type-3 {
+	color: var(- -color3);
+}
+
+.attack-type-4 {
+	color: var(- -color4);
+}
+
+.attack-type-5 {
+	color: var(- -color5);
+}
+
+.div-inline {
+	display: inline
+}
+
+#info-box {
+	background-color: white;
+	border: 1px solid #ef2c24;
+	bottom: 100px;
+	height: 100px;
+	padding: 10px;
+	/*position: absolute;*/
+	left: 30px;
+}
+/* alternating column backgrounds */
+.vis-time-axis .vis-grid.vis-odd {
+	background: #f5f5f5;
+}
+/* gray background in weekends, white text color */
+.vis-time-axis .vis-grid.vis-saturday {
+	background: greenyellow;
+}
+
+.vis-time-axis .vis-grid.vis-sunday {
+	background: #ffcfce;
+}
+
+.vis-time-axis .vis-text.vis-saturday, .vis-time-axis .vis-text.vis-sunday
+	{
+	color: white;
+}

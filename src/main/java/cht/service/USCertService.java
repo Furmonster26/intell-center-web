@@ -21,4 +21,8 @@ public interface USCertService {
     USCertPost save(USCertPost post);
 
     List<String> getList();
+    
+    void update(String id, String chi);
+    
+    void submit(String id, String chi);
 }

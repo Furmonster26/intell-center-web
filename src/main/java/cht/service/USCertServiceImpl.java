@@ -51,4 +51,30 @@ public class USCertServiceImpl implements USCertService {
         return new ArrayList<String>();
     }
 
+    /* (non-Javadoc)
+     * @see cht.service.USCertService#update(java.lang.String, java.lang.String)
+     */
+    @Override
+    public void update(String id, String chi) {
+        MongoDB db = new MongoDB();
+        try {
+            db.update(id, chi);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see cht.service.USCertService#submit(java.lang.String, java.lang.String)
+     */
+    @Override
+    public void submit(String id, String chi) {
+        MongoDB db = new MongoDB();
+        try {
+            db.update(id, chi, true);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
