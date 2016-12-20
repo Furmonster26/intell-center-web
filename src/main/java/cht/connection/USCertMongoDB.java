@@ -28,7 +28,7 @@ import com.mongodb.client.result.UpdateResult;
  *@version 1.0
  *@since 1.0
  */
-public class MongoDB {
+public class USCertMongoDB {
     
     MongoClient mongo;
     MongoCollection<Document> table;
@@ -41,11 +41,11 @@ public class MongoDB {
     }
     
     public List<String> getList() throws UnknownHostException {
-        BasicDBObject searchQuery = new BasicDBObject();
-        searchQuery.put("vendor", "bmc");
+//        BasicDBObject searchQuery = new BasicDBObject();
+//        searchQuery.put("vendor", "bmc");
         
         connect();
-        FindIterable<Document> find = table.find(); // find all
+        FindIterable<Document> find = table.find().sort(new BasicDBObject("date", -1)).limit(200); // find all
 
         List<String> results = new ArrayList<String>();
         
@@ -55,9 +55,10 @@ public class MongoDB {
                 results.add(cursor.next().toJson());
             }
         }
-        
-        
+                
         mongo.close();
+        
+        System.out.println("total posts " + results.size());
         return results;
     }
     
@@ -87,7 +88,7 @@ public class MongoDB {
     
     public static void main(String[] args) {
         try {
-            new MongoDB().update("584a66bec720b221d4eb5717", "11111");
+            new USCertMongoDB().update("584a66bec720b221d4eb5717", "11111");
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }

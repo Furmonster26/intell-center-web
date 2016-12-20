@@ -1,7 +1,7 @@
 /*
  * 版權宣告: FDC all rights reserved.
  */
-package form;
+package cht.form;
 
 /**
  * 程式資訊摘要：<P>
