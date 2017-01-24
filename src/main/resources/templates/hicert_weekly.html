@@ -1,0 +1,149 @@
+<html>
+<head>
+<title>HiNet</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style>
+<!--
+.ilink {
+	color: #3366FF;
+	padding: 5px 5px 5px 5px;
+	border: 1px solid #6699FF;
+	background-color: #D9ECFF;
+}
+
+li.MsoNormal {
+	mso-style-parent: "";
+	margin-bottom: .0001pt;
+	font-size: 12.0pt;
+	font-family: 新細明體;
+	color: black;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	margin-top: 0cm
+}
+-->
+</style>
+<base target="_blank" />
+<link rel="import" href="/bootstrap.html" />
+
+</head>
+
+
+<body bgcolor="#FFFFFF" text="#000000">
+	<div id="wrapper" class="container-fluid" ng-app="myApp" ng-controller="myCtrl">
+	{{msg}}
+		<table width="859" border="1"
+			style="font-family: Verdana, Arial, sans-serif; font-size: 9pt"
+			cellpadding="2" cellspacing="0" height="873">
+			<tr>
+				<td colspan="2" height="54" width="800">
+					<p align="center" /> <a href="http://hicert.chtd.com.tw"
+					target="_new"> <font size="2"> <img
+							src="http://hicert.chtd.com.tw/chtip/logo.jpg" width="237"
+							height="50" align="center" /></font></a><font size="2"> </font>
+				</td>
+			</tr>
+			<tr>
+				<td width="89" height="20"><b><font size="3">名稱</font></b></td>
+				<td height="20" width="756"><font size="3"><b>資安通告：{{from}}
+							~ {{to}}資安弱點威脅彙整週報</b></font></td>
+			</tr>
+			<tr bgcolor="">
+				<td height="12" width="89"><b><font size="3"
+						color="#0000FF">安全等級</font></b></td>
+				<td height="12" width="756"><font size="3" color="#0000FF">{{safe_level}}</font></td>
+			</tr>
+			<tr>
+				<td height="18" width="89"><font size="3">通報ID</font></td>
+				<td height="18" width="756"><FONT size="3">HiNet-2016-0105</FONT></td>
+			</tr>
+			<tr>
+				<td height="18" width="89"><font size="3">通報日期</font></td>
+				<td height="18" width="756"><FONT size="3">2016/10/3</FONT></td>
+			</tr>
+			<tr bgcolor="#ffffcc">
+				<td height="50" width="89"><font size="3" color="#000066">作業系統分類</font></td>
+				<td height="50" width="756">w</td>
+			</tr>
+			<tr>
+				<td height="50" width="89">外部(1)內部(0)及網站</td>
+				<td height="50" width="756">1</td>
+			</tr>
+			<tr bgcolor="#ffffcc">
+				<td height="50" width="89"><font size="3" color="#000066">手機簡訊</font></td>
+				<td height="50" width="756">HiNetSOC
+					2016.10.3發佈資安通告:9/17~9/23資安弱點威脅彙整週報</td>
+			</tr>
+			<tr bgcolor="#ffffcc">
+				<td height="50" width="89"><font size="3" color="#000066">關鍵字</font></td>
+				<td height="50" width="756">{{keyword}}</td>
+			</tr>
+			<tr bgcolor="#ffffcc">
+				<td height="79" width="89"><font color="#000066" size="3">摘要</font></td>
+				<td height="79" width="756">
+					<div>
+						<table border="1"
+							style="font-family: Verdana, Arial, sans-serif; font-size: 9pt">
+							<tr>
+								<td colspan="5"><p align="center">
+										<font size="3" color="red">各大廠牌軟硬體高風險弱點摘要</font>
+									</p></td>
+							</tr>
+							<tr>
+								<td width="15%">廠牌</td>
+								<td width="15%">軟硬體型號</td>
+								<td width="5%">弱點數量</td>
+								<td width="50%">說明</td>
+								<td width="15%">CVE ID</td>
+							</tr>
+							<tr ng-repeat="item in vuls | orderBy: 'item.vendor'">
+								<td>{{item.vendor}}</td>
+								<td>{{item.product}}</td>
+								<td>{{item.size}}</td>
+								<td>{{item.description}}</td>
+								<td><p ng-bind-html="item.cves"></p></td>
+							</tr>
+						</table>
+
+
+						註：中低風險弱點資訊請參考<a
+							href="https://www.us-cert.gov/ncas/bulletins/SB16-270"
+							target="_blank">US-CERT</a>網站
+
+					</div>
+				</td>
+			</tr>
+			<tr bgcolor="#ffffcc">
+				<td height="22" width="89"><font size="3" color="#000066">受影響系統</font></td>
+				<td height="22" width="756">
+					<ul>
+						受影響廠牌如下：
+						<li ng-repeat="v in vendors">{{v}}</li>
+					</ul>
+				</td>
+			</tr>
+			<tr bgcolor="#ffffcc">
+				<td height="22" width="89"><font color="#000066" size="3">解決方案</font></td>
+				<td height="22" width="756">詳細資訊請參考CVE ID之連結</td>
+			</tr>
+			<tr bgcolor="#ffffcc">
+				<td height="22" width="89"><font size="3" color="#000066">詳細描述</font></td>
+				<td height="22" width="756">詳細資訊請參考CVE ID之連結</td>
+			</tr>
+			<tr bgcolor="#ffffcc">
+				<td height="22" width="89"><font size="3" color="#000066">參考資訊</font></td>
+				<td height="22" width="756"></td>
+			</tr>
+			<tr bgcolor="#ffffcc">
+				<td height="22" width="89"><font color="#000066" size="3">參考網站</font></td>
+				<td height="22" width="756"><a
+					href="https://www.us-cert.gov/ncas/bulletins/SB16-270"
+					target="_blank">US-CERT</a><br /> <a href="http://www.nist.gov/"
+					target="_blank">NIST</a></td>
+			</tr>
+		</table>
+	</div>
+	<script type="text/javascript" src="/js/hicert_weekly.js"></script>
+
+</body>
+</html>

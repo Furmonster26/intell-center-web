@@ -1,7 +1,8 @@
 // AngularJS
 var app = angular.module('myApp', []);
-app.controller('myCtrl', function($scope, $interval, $http) {
+app.controller('myCtrl', function($scope, $sce, $interval, $http) {
 	var m = $scope;
+	m.msg = 'aaa';
 	
 	m.myRoleName = {};
 	
@@ -22,7 +23,7 @@ app.controller('myCtrl', function($scope, $interval, $http) {
 	m.thisSunday = lastSunday;
 	m.lastMonday = lastMonday;
 
-	m.posts = [];
+	m.vuls = [];
 	
 	angular.element(document).ready(function () {
 		$http({
@@ -38,24 +39,25 @@ app.controller('myCtrl', function($scope, $interval, $http) {
 	
 	$http({
 		method : 'GET',
-		url : '/uscert/list'
+		url : '/uscert/hicert/list'
 	}).then(
 			function successCallback(response) {
-				response.data.forEach(function(item, index) {
-					var obj = angular.fromJson(item);
-					obj.score = obj.score.substring(obj.score.indexOf('>') + 1,
-							obj.score.indexOf('</'));
-					obj.published = obj.published.substring(obj.published
-							.indexOf('>') + 1, obj.published.indexOf('</'));
-															
-					if (obj.score >= 9) {
-						m.posts.push(obj);
-					}
+				
+				console.log(response);
+								
+				for (var key in response.data) {
+					var obj = {};
+					obj.vendor = key.split(' -- ')[0];
+					obj.product = key.split(' -- ')[1];
+					obj.description = response.data[key].description;
+					obj.size = response.data[key].size;
+					obj.cves = $sce.trustAsHtml(response.data[key].cves[0]);
+//					$sce.trustAsHtml(someHtmlVar);
 					
-					m.updateWriterDone();
-				});
+					m.vuls.push(obj);
+				}
 			}, function errorCallback(response) {
-
+				
 			});
 	
 	m.clickSave = function(item) {

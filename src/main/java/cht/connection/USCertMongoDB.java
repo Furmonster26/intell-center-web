@@ -4,11 +4,16 @@
 package cht.connection;
 
 import java.net.UnknownHostException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
@@ -41,11 +46,16 @@ public class USCertMongoDB {
     }
     
     public List<String> getList() throws UnknownHostException {
-//        BasicDBObject searchQuery = new BasicDBObject();
-//        searchQuery.put("vendor", "bmc");
+        DateTime today = DateTime.now();
+        DateTime sameDayLastWeek = today.minusWeeks(1);
+        DateTime mondayLastWeek = sameDayLastWeek.withDayOfWeek(DateTimeConstants.MONDAY);
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd");
+        
+        BasicDBObject searchQuery = new BasicDBObject();
+        searchQuery.put("weekOf", mondayLastWeek.toString(fmt));// default get latest week
         
         connect();
-        FindIterable<Document> find = table.find().sort(new BasicDBObject("date", -1)).limit(200); // find all
+        FindIterable<Document> find = table.find(searchQuery).sort(new BasicDBObject("date", -1)).limit(200); // find all
 
         List<String> results = new ArrayList<String>();
         
@@ -86,12 +96,12 @@ public class USCertMongoDB {
         mongo.close();
     }
     
-    public static void main(String[] args) {
-        try {
-            new USCertMongoDB().update("584a66bec720b221d4eb5717", "11111");
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-    }
+//    public static void main(String[] args) {
+//        try {
+//            new USCertMongoDB().update("584a66bec720b221d4eb5717", "11111");
+//        } catch (UnknownHostException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 }

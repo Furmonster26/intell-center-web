@@ -3,8 +3,11 @@
  */
 package cht.web;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
+import cht.domain.HicertVul;
 import cht.form.USCertForm;
 import cht.service.USCertService;
 
@@ -80,5 +85,55 @@ public class USCertController {
     public void submit(@RequestBody USCertForm form) {        
         System.out.println(form.getPostId() + " " + form.getChi());
         usCertService.submit(form.getPostId(), form.getChi());        
+    }
+    
+    @RequestMapping(value="/hicert",method = RequestMethod.GET)    
+    public ModelAndView hicert(ModelAndView mav) {        
+        
+        mav.setViewName("hicert_weekly");
+        mav.addObject("year", 2016);
+        return mav;
+    }
+    
+    @RequestMapping(value="/hicert/list",method = RequestMethod.GET)    
+    public String hicertList() {        
+        
+        List<String> posts = usCertService.getList();
+        
+        Map<String, HicertVul> vuls = new HashMap();
+        posts.forEach(p -> {
+            System.out.println(p);
+            JSONObject json = new JSONObject(p);
+            String vendor = (String) json.get("vendor");
+            String product = (String) json.get("product");
+            
+            if (vuls.containsKey(vendor + " -- " + product)) {
+                HicertVul oldVul = vuls.get(vendor + " -- " + product);
+                oldVul.setSize(oldVul.getSize() +1);
+                List oldCVEs = oldVul.getCves();
+                System.out.println((String) json.get("published"));
+                oldCVEs.add((String) json.get("published"));
+                oldVul.setCves(oldCVEs);
+            } else {
+                HicertVul newV = new HicertVul();
+                newV.setVendor(vendor);
+                newV.setProduct(product);
+                newV.setSize(1);
+                
+                try {
+                    newV.setDescription((String) json.get("chi"));
+                } catch (Exception e) {
+                    newV.setDescription("");
+                }
+                List<String> newCves = new ArrayList<String>();
+                newCves.add((String) json.get("published"));
+                newV.setCves(newCves);
+                
+                vuls.put(vendor + " -- " + product, newV);
+            }
+        });
+        
+        String result = new JSONObject(vuls).toString();
+        return result;
     }
 }
